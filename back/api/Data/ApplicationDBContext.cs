@@ -13,6 +13,6 @@ namespace api.Data
         {
             
         }
-        public DbSet<RegisterUser> RegisterUser { get; set; }
+        public DbSet<Users> Users { get; set; }
     }
 }

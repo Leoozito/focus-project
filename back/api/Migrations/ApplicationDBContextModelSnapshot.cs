@@ -22,7 +22,7 @@ namespace api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("api.Models.RegisterUser", b =>
+            modelBuilder.Entity("api.Models.Users", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +78,7 @@ namespace api.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("RegisterUser");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

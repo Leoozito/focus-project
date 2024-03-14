@@ -12,7 +12,7 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20240314001450_init")]
+    [Migration("20240314225705_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace api.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("api.Models.RegisterUser", b =>
+            modelBuilder.Entity("api.Models.Users", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +81,7 @@ namespace api.Migrations
 
                     b.HasKey("id");
 
-                    b.ToTable("RegisterUser");
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }
