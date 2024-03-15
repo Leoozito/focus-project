@@ -2,13 +2,11 @@ import Button from '../Button';
 import Input from '../Input';
 import './Form.css'
 
-const Form = () => {
+const Form = (props) => {
     return(    
         <section className="formulario">
             <form>
-                <Input label="Nome" placeholder="Digite seu nome:"/>
-                <Input label="Email" placeholder="Digite seu email:"/>
-                <Input label="CEP" placeholder="Digite seu CEP:"/>
+                {props.children}
                 <Button descricao="Enviar"/>
             </form>
         </section>
