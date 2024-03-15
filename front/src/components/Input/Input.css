@@ -12,7 +12,7 @@
 
 .input-text input {
     border-radius: 10px;
-    background-color: #ffffff;
+	background-color: #eee;
     box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.06);
     width: 100%;
     border: none;
@@ -21,6 +21,7 @@
     box-sizing: border-box;
     height: 60px;
     align-items: center;
+    margin: 8px 0;
 }
 
 .input-text input:focus {
