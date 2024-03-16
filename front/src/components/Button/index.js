@@ -4,7 +4,9 @@ const Button = (props) => {
     return(
         <div className='botao'>
             <a href={props.href}>
-                <button>{props.name}</button>
+                <button disabled={props.disabled} style={{ backgroundColor: props.color, boxShadow: props.shadow }}>
+                    {props.name}
+                </button>
             </a>
         </div>
     )

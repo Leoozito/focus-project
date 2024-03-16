@@ -31,7 +31,7 @@ const Login = () => {
                             </div>
                             <h1>Seja bem-vindo !</h1>
                             <p>Insira seus dados pessoais e comece sua jornada conosco</p>
-                            <Button name="Cadastre-se"/>
+                            <Button name="Cadastre-se" href="/users/sign-up"/>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,6 @@ const Form = (props) => {
         <section className="formulario">
             <form>
                 {props.children}
-                <Button name="Enviar"/>
             </form>
         </section>
     )

@@ -1,5 +1,8 @@
+.botao {
+    margin: 16px 0;
+}
+
 .botao button {
-    margin: 10px 0;
     background-color: #2dd4bf;
     border-radius: 10px;
     font-weight: 700;
