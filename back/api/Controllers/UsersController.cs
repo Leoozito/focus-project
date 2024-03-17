@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Core.Dtos.Users;
 using api.Data;
 using Microsoft.AspNetCore.Mvc;
+using api.Core.AutoMappers;
 
 namespace api.Controllers
 {
@@ -36,6 +38,15 @@ namespace api.Controllers
             }
 
             return Ok(user);
+        }
+
+        [HttpPost]
+        public IActonResult Create([FromBody] CreateUserRequestDto usersDto)
+        {
+            var usersModel = usersDto.ToUsersFromCreateDTO();
+            _context.Users.Add(usersModel);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(GetById), new { id = usersModel.id })
         }
     }
 }

@@ -11,19 +11,19 @@
 }
 
 .formulario form {
-    gap: 3rem;
+    gap: 2rem;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     display: grid;
-}
-
-@media screen and (max-width: 600px) {
-    .formulario form {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
 }
 
 @media screen and (max-width: 900px) {
     .formulario form {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .formulario form {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
     }
 }

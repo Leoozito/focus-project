@@ -56,21 +56,21 @@ export default function HorizontalLinearStepper() {
       <Form>
       {activeStep === 0 && (
         <>
-            <Input placeholder="Nome:"/>
-            <Input placeholder="Username:"/>
-            <Input placeholder="Email:"/>
-            <Input placeholder="Telefone:"/>
+            <Input placeholder="Digite seu Nome:" label="Nome"/>
+            <Input placeholder="Digite seu Username:" label="Username"/>
+            <Input placeholder="Digite seu Email:" label="Email"/>
+            <Input placeholder="Digite seu Telefone:" label="Telefone"/>
         </>
       )}
 
       {activeStep === 1 && (
         <>
-            <Input placeholder="CEP:"/>
-            <Input placeholder="Endereço:"/>
-            <Input placeholder="Número:"/>
-            <Input placeholder="Bairro:"/>
-            <Input placeholder="Cidade:"/>
-            <Input placeholder="Estado:"/>
+            <Input placeholder="Digite seu CEP:" label="CEP"/>
+            <Input placeholder="Digite seu Endereço:" label="Endereço"/>
+            <Input placeholder="Digite seu Número:" label="Número"/>
+            <Input placeholder="Digite seu Bairro:" label="Bairro"/>
+            <Input placeholder="Digite seu Cidade:" label="Cidade"/>
+            <Input placeholder="Digite seu Estado:" label="Estado"/>
         </>
       )}
 

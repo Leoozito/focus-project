@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Models
+namespace api.Dtos.Users
 {
-    public class Users
+    public class UsersDto
     {
         public int id { get; set; }
         public string username { get; set; }
