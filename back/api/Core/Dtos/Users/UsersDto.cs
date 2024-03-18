@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace api.Dtos.Users
+namespace api.Core.Dtos.Users
 {
     public class UsersDto
     {

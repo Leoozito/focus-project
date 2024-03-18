@@ -6,6 +6,7 @@ using api.Core.Dtos.Users;
 using api.Data;
 using Microsoft.AspNetCore.Mvc;
 using api.Core.AutoMappers;
+using api.Services;
 
 namespace api.Controllers
 {
@@ -40,13 +41,13 @@ namespace api.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        public IActonResult Create([FromBody] CreateUserRequestDto usersDto)
-        {
-            var usersModel = usersDto.ToUsersFromCreateDTO();
-            _context.Users.Add(usersModel);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(GetById), new { id = usersModel.id })
-        }
+        // [HttpPost]
+        // public IActionResult Create([FromBody] UsersDto usersDto)
+        // {
+        //     var usersModel = usersDto.ToUsersFromCreateDTO();
+        //     _context.Users.Add(usersModel);
+        //     _context.SaveChanges();
+        //     return CreatedAtAction(nameof(GetById), new { id = usersModel.id });
+        // }
     }
 }

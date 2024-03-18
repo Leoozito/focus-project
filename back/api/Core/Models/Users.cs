@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
-namespace api.Core.Models
+namespace api.Core.Models.Users
 {
-    public class Users
+    public class Users : IdentityUser
     {
-        public int id { get; set; }
-        public string username { get; set; }
+        // public int id { get; set; }
+        // public string username { get; set; }
         public string name { get; set; }
         public string telephone { get; set; }
-        public string email { get; set; }
+        // public string email { get; set; }
 
         public string cep { get; set; }
         public string city { get; set; }

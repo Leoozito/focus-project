@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Dtos.Users;
-using api.Core.Models;
+using api.Core.Dtos.Users;
+using api.Core.Models.Users;
 using AutoMapper;
 using api.Core.Dtos.Users;
 
@@ -16,28 +16,4 @@ namespace api.Core.AutoMappers
             .ReverseMap();
         }
     }
-
-    public static class UsersMatter {
-        public static Users ToUsersFromCreateDTO(this CreateUserRequestDto UsersDto)
-        {
-            return new Users
-            {
-                name = UsersDto.name,
-                email = UsersDto.email,
-                username = UsersDto.username,
-                telephone = UsersDto.telephone,
-                
-                cep = UsersDto.cep,
-                city = UsersDto.city,
-                district = UsersDto.district,
-                locationAdress = UsersDto.locationAdress,
-                locationNumber = UsersDto.locationNumber,
-                state = UsersDto.state,
-                complementation = UsersDto.complementation,
-
-                registeredDate = DateTime.Today,
-            };
-        }
-    }
-
 }
