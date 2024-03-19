@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class Identity : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -44,6 +44,8 @@ namespace api.Migrations
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Complementation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegisteredDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ImageProfile = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DescriptionProfile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),

@@ -8,12 +8,15 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    max-width: 1000px;
 }
 
 .formulario form {
     gap: 2rem;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     display: grid;
+    align-items: center;
+    justify-content: center;
 }
 
 @media screen and (max-width: 900px) {

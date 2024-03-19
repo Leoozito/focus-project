@@ -24,15 +24,13 @@ namespace api.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
 
         public static Users user = new Users();
 
-        public UsersController(ApplicationDBContext context, IConfiguration configuration, IMapper mapper )
+        public UsersController(ApplicationDBContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -57,7 +55,7 @@ namespace api.Controllers
         }
 
         [HttpPost("register")]
-        public ActionResult<UsersDto> Register(UsersDto request)
+        public ActionResult<Users> Register(Users request)
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(
                 request.PasswordHash
@@ -69,8 +67,8 @@ namespace api.Controllers
             return Ok(user);
         }
 
-        [HttpPost("Login")]
-        public ActionResult<UsersDto> Login(UsersDto request)
+        [HttpPost("login")]
+        public ActionResult<Users> Login(Users request)
         {
             if (user.UserName != request.UserName)
             {
@@ -82,16 +80,15 @@ namespace api.Controllers
                 return BadRequest("Senha incorreta");
             }
 
-            UsersDto usersDto = _mapper.Map<UsersDto>(user);
-            string token = CreateToken(usersDto);
+            string token = CreateToken(user);
 
             return Ok(token);
         }
 
-        private string CreateToken(UsersDto usersDto)
+        private string CreateToken(Users users)
         {
             List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, usersDto.UserName)
+                new Claim(ClaimTypes.Name, users.UserName)
             };
 
             var key = new SymmetricSecurityKey(
@@ -101,7 +98,7 @@ namespace api.Controllers
             );
 
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 claims: claims,

@@ -5,8 +5,6 @@ const HomePage = () => {
     return(
         <>
             <Navbar/>
-            <Button href="/users/sign-in" name="Login"/>
-            <Button href="/users/sign-up" name="Logout"/>
         </>
     )
 }

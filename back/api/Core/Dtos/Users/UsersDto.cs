@@ -24,5 +24,7 @@ namespace api.Core.Dtos.Users
         public string Complementation { get; set; }
 
         public DateTime RegisteredDate { get; set; } = DateTime.Now;
+        public string ImageProfile { get; set; }
+        public string DescriptionProfile { get; set; }
     }
 }
