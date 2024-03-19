@@ -7,6 +7,8 @@ using api.Data;
 using Microsoft.AspNetCore.Mvc;
 using api.Core.AutoMappers;
 using api.Services;
+using BCrypt.Net;
+using api.Core.Models.Users;
 
 namespace api.Controllers
 {
@@ -15,6 +17,8 @@ namespace api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        public static Users user = new Users();
+
         public UsersController(ApplicationDBContext context )
         {
             _context = context;
@@ -41,13 +45,33 @@ namespace api.Controllers
             return Ok(user);
         }
 
-        // [HttpPost]
-        // public IActionResult Create([FromBody] UsersDto usersDto)
-        // {
-        //     var usersModel = usersDto.ToUsersFromCreateDTO();
-        //     _context.Users.Add(usersModel);
-        //     _context.SaveChanges();
-        //     return CreatedAtAction(nameof(GetById), new { id = usersModel.id });
-        // }
+        [HttpPost("register")]
+        public ActionResult<UsersDto> Register(UsersDto request)
+        {
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(
+                request.PasswordHash
+            );
+            
+            user.UserName = request.UserName;
+            user.PasswordHash = passwordHash;
+
+            return Ok(user);
+        }
+
+        [HttpPost("Login")]
+        public ActionResult<UsersDto> Login(UsersDto request)
+        {
+            if (user.UserName != request.UserName)
+            {
+                return BadRequest("Usuario não encontrado");
+            }
+
+            if(!BCrypt.Net.BCrypt.Verify(request.PasswordHash, user.PasswordHash))
+            {
+                return BadRequest("Senha incorreta");
+            }
+
+            return Ok(user);
+        }
     }
 }

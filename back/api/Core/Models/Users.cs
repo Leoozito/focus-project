@@ -9,19 +9,22 @@ namespace api.Core.Models.Users
     public class Users : IdentityUser
     {
         // public int id { get; set; }
-        // public string username { get; set; }
-        public string name { get; set; }
-        public string telephone { get; set; }
-        // public string email { get; set; }
+        public string UserName { get; set; }
+        public string Name { get; set; }
+        public string Telephone { get; set; }
+       
+        public string Email { get; set; }
+        public string Role { get; set; }
+        public string PasswordHash { get; set; }
 
-        public string cep { get; set; }
-        public string city { get; set; }
-        public string district { get; set; }
-        public string locationAdress { get; set; }
-        public int locationNumber { get; set; }
-        public string state { get; set; }
-        public string complementation { get; set; }
+        public string Cep { get; set; }
+        public string City { get; set; }
+        public string District { get; set; }
+        public string LocationAdress { get; set; }
+        public int LocationNumber { get; set; }
+        public string State { get; set; }
+        public string Complementation { get; set; }
 
-        public DateTime registeredDate { get; set; } = DateTime.Now;
+        public DateTime RegisteredDate { get; set; } = DateTime.Now;
     }
 }
