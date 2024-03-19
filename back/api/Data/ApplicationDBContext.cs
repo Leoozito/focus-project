@@ -16,6 +16,6 @@ namespace api.Data
         {
             
         }
-        public DbSet<UsersDto> Users { get; set; }
+        public DbSet<Users> Users { get; set; }
     }
 }

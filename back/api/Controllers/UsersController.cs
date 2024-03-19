@@ -6,9 +6,15 @@ using api.Core.Dtos.Users;
 using api.Data;
 using Microsoft.AspNetCore.Mvc;
 using api.Core.AutoMappers;
-using api.Services;
 using BCrypt.Net;
 using api.Core.Models.Users;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using AutoMapper;
 
 namespace api.Controllers
 {
@@ -17,11 +23,16 @@ namespace api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApplicationDBContext _context;
+        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
+
         public static Users user = new Users();
 
-        public UsersController(ApplicationDBContext context )
+        public UsersController(ApplicationDBContext context, IConfiguration configuration, IMapper mapper )
         {
             _context = context;
+            _configuration = configuration;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -71,7 +82,35 @@ namespace api.Controllers
                 return BadRequest("Senha incorreta");
             }
 
-            return Ok(user);
+            UsersDto usersDto = _mapper.Map<UsersDto>(user);
+            string token = CreateToken(usersDto);
+
+            return Ok(token);
+        }
+
+        private string CreateToken(UsersDto usersDto)
+        {
+            List<Claim> claims = new List<Claim> {
+                new Claim(ClaimTypes.Name, usersDto.UserName)
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    _configuration.GetSection("AppSettings:Token").Value!
+                )
+            );
+
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
+            );
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
         }
     }
 }
