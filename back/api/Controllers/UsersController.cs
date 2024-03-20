@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AutoMapper;
+using api.Core.Models;
 
 namespace api.Controllers
 {
@@ -61,23 +62,45 @@ namespace api.Controllers
                 request.PasswordHash
             );
             
-            user.UserName = request.UserName;
-            user.PasswordHash = passwordHash;
+            Users newUser = new Users {
+                UserName = request.UserName,
+                Name = request.Name,
+                Telephone = request.Telephone,
+                Email = request.Email,
+                Role = request.Role,            
+                PasswordHash = passwordHash,
 
-            return Ok(user);
+                Cep = request.Cep,            
+                City = request.City,            
+                District = request.District,            
+                LocationAdress = request.LocationAdress,            
+                LocationNumber = request.LocationNumber,            
+                State = request.State,            
+                Complementation = request.Complementation,            
+
+                RegisteredDate = DateTime.Now,
+                ImageProfile = request.ImageProfile,            
+                DescriptionProfile = request.DescriptionProfile 
+            };           
+            
+            _context.Users.Add(newUser);
+
+            _context.SaveChanges();
+
+            return Ok(newUser);
         }
 
         [HttpPost("login")]
-        public ActionResult<Users> Login(Users request)
+        public ActionResult<Users> Login(AuthRequest request)
         {
-            if (user.UserName != request.UserName)
+            if (user.Email != request.Email)
             {
-                return BadRequest("Usuario não encontrado");
+                return BadRequest("Usuario ou senha incorreto");
             }
 
             if(!BCrypt.Net.BCrypt.Verify(request.PasswordHash, user.PasswordHash))
             {
-                return BadRequest("Senha incorreta");
+                return BadRequest("Usuario ou senha incorreto");
             }
 
             string token = CreateToken(user);
@@ -88,7 +111,7 @@ namespace api.Controllers
         private string CreateToken(Users users)
         {
             List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, users.UserName)
+                new Claim(ClaimTypes.Name, users.Email)
             };
 
             var key = new SymmetricSecurityKey(

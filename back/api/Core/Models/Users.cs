@@ -11,10 +11,10 @@ namespace api.Core.Models.Users
         // public int id { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }
-        public string Telephone { get; set; }
+        public string? Telephone { get; set; }
        
         public string Email { get; set; }
-        public string Role { get; set; }
+        public string? Role { get; set; }
         public string PasswordHash { get; set; }
 
         public string Cep { get; set; }
@@ -23,11 +23,11 @@ namespace api.Core.Models.Users
         public string LocationAdress { get; set; }
         public int LocationNumber { get; set; }
         public string State { get; set; }
-        public string Complementation { get; set; }
+        public string? Complementation { get; set; }
 
         public DateTime RegisteredDate { get; set; } = DateTime.Now;
 
-        public string ImageProfile { get; set; }
-        public string DescriptionProfile { get; set; }
+        public string? ImageProfile { get; set; }
+        public string? DescriptionProfile { get; set; }
     }
 }

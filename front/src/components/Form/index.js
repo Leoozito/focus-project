@@ -2,11 +2,11 @@ import Button from '../Button';
 import Input from '../Input';
 import './Form.css'
 
-const Form = (props) => {
+const Form = ({onSubmit, children}) => {
     return(    
         <section className="formulario">
-            <form>
-                {props.children}
+            <form onSubmit={onSubmit}>
+                {children}
             </form>
         </section>
     )

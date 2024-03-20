@@ -8,12 +8,11 @@
 
 .container-main {
 	display: flex;
-
 }
 
 .container-button-group {
+	align-items: center;
 	flex-direction: column;
-	margin-left: 80px;
 }
 
 .container-insert-img {
@@ -26,10 +25,15 @@
 }
 
 .container-button {
+	margin: 24px 0;
 	display: flex;
 	gap: 24px;
 	justify-content: center;
 	align-items: center;
+}
+
+.container-input-span-info {
+	flex-direction: column;
 }
 
 .img-input {
@@ -62,3 +66,38 @@
 	align-items: center;
 	color: #3355ff;
 }
+
+@media screen and (max-width: 900px) {
+	.container-main {
+		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
+.input-cep {
+	position: relative;
+	color: #aaa;
+	font-size: 16px;
+  }
+  
+.input-cep { display: inline-block; }
+
+.input-cep input {
+	width: 250px;
+	height: 32px;
+
+	background: #fcfcfc;
+	border: 1px solid #aaa;
+	border-radius: 5px;
+	box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
+}
+
+.input-cep input { text-indent: 32px;}
+.input-cep .icon-search { 
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+
+.input-cep .icon-search {left: auto; right: 10px;}

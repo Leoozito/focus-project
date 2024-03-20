@@ -125,3 +125,10 @@ h1 {
 .div1 p {
     font-weight: 600;
 }
+
+.message-error {
+	color: #e51313;
+	padding: 4px;
+	margin-bottom: 4px;
+	align-items: center;
+}
