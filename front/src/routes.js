@@ -3,7 +3,7 @@ import HomePage from "./pages/HomePage";
 import Login from "./pages/Login";
 import Formulario from "./pages/FormRegister";
 import isAuthenticated from "./Auth";
-import {Fragment} from "react"
+import {Fragment, useEffect} from "react"
 
 const rotasPrivadas = [
     {

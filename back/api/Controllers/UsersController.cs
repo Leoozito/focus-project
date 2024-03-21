@@ -16,6 +16,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using AutoMapper;
 using api.Core.Models;
+using api.Services;
 
 namespace api.Controllers
 {
@@ -55,9 +56,17 @@ namespace api.Controllers
             return Ok(user);
         }
 
+        // [Authorize]
         [HttpPost("register")]
         public ActionResult<Users> Register(Users request)
         {
+            var userSearch = _context.Users.SingleOrDefault(u => u.Email == request.Email);
+
+            if (userSearch != null)
+            {
+                return BadRequest("Email inserido já está cadastrado.");
+            }
+
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(
                 request.PasswordHash
             );
@@ -90,47 +99,25 @@ namespace api.Controllers
             return Ok(newUser);
         }
 
+        // [Authorize]
         [HttpPost("login")]
         public ActionResult<Users> Login(AuthRequest request)
         {
-            if (user.Email != request.Email)
+            var userSearch = _context.Users.SingleOrDefault(u => u.Email == request.Email);
+
+            if (userSearch == null)
+            {
+                return BadRequest("Usuário ou senha incorreto");
+            }
+
+            if(!BCrypt.Net.BCrypt.Verify(request.PasswordHash, userSearch.PasswordHash))
             {
                 return BadRequest("Usuario ou senha incorreto");
             }
 
-            if(!BCrypt.Net.BCrypt.Verify(request.PasswordHash, user.PasswordHash))
-            {
-                return BadRequest("Usuario ou senha incorreto");
-            }
-
-            string token = CreateToken(user);
+            var token = TokenService.GenerateToken(new Users());
 
             return Ok(token);
-        }
-
-        private string CreateToken(Users users)
-        {
-            List<Claim> claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, users.Email)
-            };
-
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    _configuration.GetSection("AppSettings:Token").Value!
-                )
-            );
-
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds
-            );
-
-            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-            return jwt;
         }
     }
 }

@@ -1,4 +1,4 @@
-import {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
@@ -13,6 +13,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axiosService from '../../services/AxiosService';
 import getDadosCep from '../../services/CepService';
+import $ from 'jquery';
+import 'jquery-mask-plugin/dist/jquery.mask.min'; 
 
 const steps = ['Informações de dados cadastrais', 'Informações de localidade', 'Complementação'];
 
@@ -30,7 +32,7 @@ export default function HorizontalLinearStepper() {
     
     const [cep, setCep] = useState("");
     const [endereco, setEndereco] = useState("");
-    const [numero, setNumero] = useState(0);
+    const [numero, setNumero] = useState();
     const [bairro, setBairro] = useState("");
     const [cidade, setCidade] = useState("");
     const [estado, setEstado] = useState("");
@@ -70,6 +72,16 @@ export default function HorizontalLinearStepper() {
         resolver: zodResolver(schema)
     });
 
+    // funções direto do MUI, para controlar visualização de senha
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+  
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
+
+    // funções para inserção de imagem
     const handleChangeClick = () => {
       inputRef.current.click();
     };
@@ -78,10 +90,11 @@ export default function HorizontalLinearStepper() {
       setImageProfile(file);
     };
 
+    // funções que ativam botões dos STEP (botões de "Voltar" e "Próximo")
     const isStepSkipped = (step) => {
       return skipped.has(step);
     };
-
+    
     const handleNext = () => {
       let newSkipped = skipped;
       if (isStepSkipped(activeStep)) {
@@ -97,6 +110,7 @@ export default function HorizontalLinearStepper() {
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
+    // dados para registrar novo usuario, e função de registro
     const dadosRegister = {
       UserName : username,
       Name : nome,
@@ -116,7 +130,6 @@ export default function HorizontalLinearStepper() {
     }
 
     const registerUser = () => {
-        console.log("ALOO")
         axiosService.registerService(dadosRegister)
         .then((res) => {
             console.log(res)
@@ -127,19 +140,30 @@ export default function HorizontalLinearStepper() {
         })
     }
 
-    useEffect(() => {
-      if (cep.length == 8) {
+    // função de auto pesquisa de CEP
+    const buscaCep = () => {
         getDadosCep(cep)
         .then((res) => {
           console.log("DADOS",res)
         })
         .catch((err) => {
-          
+          console.log(err)
         })
+    }
+
+    useEffect(() => {
+      if (cep.length == 8) {
+        buscaCep()
       }
     }, [cep])
 
-    return (
+    // MASK dos inputs
+    $(document).ready(function(){
+        $('.cep').mask('00000-000');
+        $('.phone_with_ddd').mask('(00) 00000-0000');
+    })
+
+    return(
       <>
         <div className="form-register">
           <Stepper 
@@ -163,6 +187,7 @@ export default function HorizontalLinearStepper() {
               <>
                   <div className="container-input-span-info">
                     <Input
+                        value={nome}
                         register={register("nome")}
                         onChange={(e) => setNome(e.target.value)}
                         placeholder="Digite seu Nome:"
@@ -173,6 +198,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={username}
                         register={register("username")}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Digite seu Username:"
@@ -183,6 +209,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={email}
                         register={register("email")}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Digite seu Email:"
@@ -193,6 +220,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={senha}
                         register={register("senha")}
                         onChange={(e) => setSenha(e.target.value)}
                         placeholder="Insira a senha para sua conta:" label="Senha"
@@ -202,6 +230,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={confirmeSenha}
                         register={register("confirmeSenha")}
                         onChange={(e) => setConfirmeSenha(e.target.value)}
                         placeholder="Confirme sua senha:"
@@ -212,6 +241,8 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        id="phone_with_ddd"
+                        value={telefone}
                         onChange={(e) => setTelefone(e.target.value)}
                         placeholder="Digite seu Telefone:"
                         label="Telefone"
@@ -222,19 +253,26 @@ export default function HorizontalLinearStepper() {
             )}
             {activeStep === 1 && (
               <>
-                  <div className="input-cep">
-                    <Input
-                        register={register("cep")}
-                        onChange={(e) => setCep(e.target.value)}
-                        placeholder="Digite seu CEP:"
-                        label="CEP"
-                    />
-                    <span className="icon-search"><SearchIcon/></span>
+                  <div className="container-input-span-info">
+                    <div className="input-cep">
+                      <Input
+                          id="cep"
+                          value={cep}
+                          register={register("cep")}
+                          onChange={(e) => setCep(e.target.value)}
+                          placeholder="Digite seu CEP:"
+                          label="CEP"
+                      />
+                      <a href="">
+                        <span className="icon-search"><SearchIcon/></span>
+                      </a>
+                    </div>
+                    {errors.cep && <span className="message-error">{errors.cep.message}</span>}
                   </div>
-                  {errors.cep && <span className="message-error">{errors.cep.message}</span>}
 
                   <div className="container-input-span-info">
                     <Input
+                        value={endereco}
                         register={register("endereco")}
                         onChange={(e) => setEndereco(e.target.value)}
                         placeholder="Digite seu Endereço:"
@@ -245,6 +283,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={numero}
                         register={register("numero")}
                         onChange={(e) => setNumero(e.target.value)}
                         placeholder="Digite seu Número:"
@@ -255,6 +294,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={bairro}
                         register={register("bairro")}
                         onChange={(e) => setBairro(e.target.value)}
                         placeholder="Digite seu Bairro:"
@@ -265,6 +305,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={cidade}
                         register={register("cidade")}
                         onChange={(e) => setCidade(e.target.value)}
                         placeholder="Digite seu Cidade:"
@@ -275,6 +316,7 @@ export default function HorizontalLinearStepper() {
 
                   <div className="container-input-span-info">
                     <Input
+                        value={estado}
                         register={register("estado")}
                         onChange={(e) => setEstado(e.target.value)}
                         placeholder="Digite seu Estado:"
@@ -327,15 +369,16 @@ export default function HorizontalLinearStepper() {
                   </div>
                 )}
                 <div className="container-button">
+                    {activeStep > 0 && (
                     <Button
                         type="button"
                         name="Voltar"
                         color="#1f2937"
                         shadow="none"
-                        disabled={activeStep === 0}
                         onClick={handleBack}
                     />
-                    {activeStep === steps.length - 1 ? (
+                    )}
+                    {activeStep == 2 ? (
                       <Button
                         type="subnit"
                         name='Enviar'

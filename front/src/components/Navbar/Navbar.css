@@ -89,13 +89,13 @@ a {
   opacity: 0;
 }
 
-@media screen and (max-width: 1118px) {
+@media screen and (min-width: 1400px) {
   .nav__menu {
     position: absolute;
     left: 0;
     top: 2.5rem;
     width: 100%;
-    height: calc(100vh - 3.5rem);
+    height: calc(100vh);
     overflow: auto;
     pointer-events: none;
     opacity: 0;
@@ -208,7 +208,7 @@ a {
   }
 }
 
-@media screen and (min-width: 1118px) {
+@media screen and (min-width: 800px) and (max-width: 1400px) {
   .container {
     margin-inline: auto;
   }

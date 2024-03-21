@@ -1,5 +1,4 @@
 import "./Login.css"
-import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -8,7 +7,11 @@ import axiosService from '../../services/AxiosService';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import React, { useEffect, useState } from "react";
+import React from "react";
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
 
 const Login = () => {
     const [email, setEmail] = React.useState("");
@@ -35,16 +38,23 @@ const Login = () => {
     const loginUser = () => {
         axiosService.loginService(dadosLogin)
         .then((res) => {
-            console.log(res)
-            const token = "seu_token_aqui";
-
-            // Adicionando o id vindo do BD simulando token ao localStorage
+            const token = res.token;
             localStorage.setItem('token', token);
+            console.log("Token", token)
+            window.location.href = "/"
         })
         .catch((err) => {
             setErrorLogin(err.response.data)
         })
     }
+
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+  
+    const handleMouseDownPassword = (event) => {
+      event.preventDefault();
+    };
 
     return(
         <>
@@ -70,7 +80,20 @@ const Login = () => {
                                 <Input 
                                     placeholder="Senha"
                                     register={register("password")}
-                                    onChange={(e) => setPassword(e.target.value)}  
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    id="standard-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                      <InputAdornment position="end">
+                                        <IconButton
+                                          aria-label="toggle password visibility"
+                                          onClick={handleClickShowPassword}
+                                          onMouseDown={handleMouseDownPassword}
+                                        >
+                                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                      </InputAdornment>
+                                    }  
                                 />
                                 {errors.password && <span className="message-error">{errors.password.message}</span>}
                                 {errorLogin &&(
