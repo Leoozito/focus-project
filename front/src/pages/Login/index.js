@@ -47,7 +47,11 @@ const Login = () => {
             Cookies.set('id', res.userSearch.id);
         })
         .catch((err) => {
-            setError(err.response.data)
+            if (err.response) {
+                setError(err.response.data);
+            } else if (err.request) {
+                setError(err)
+            }
         })
     }
 
