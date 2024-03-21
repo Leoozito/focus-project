@@ -18,7 +18,7 @@ import Cookies from 'js-cookie';
 const Login = () => {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const [errorLogin, setErrorLogin] = React.useState("");
+    const [error, setError] = React.useState("");
 
     const schema = z.object({
         email: z.string()
@@ -38,9 +38,6 @@ const Login = () => {
     }
 
     const { setToken } = useAuth();
-    setTimeout(() => {
-        loginUser();
-    }, 3 * 1000);
 
     const loginUser = () => {
         axiosService.loginService(dadosLogin)
@@ -50,7 +47,7 @@ const Login = () => {
             Cookies.set('id', res.userSearch.id);
         })
         .catch((err) => {
-            setErrorLogin(err.response.data)
+            setError(err.response.data)
         })
     }
 
@@ -102,10 +99,10 @@ const Login = () => {
                                     }  
                                 />
                                 {errors.password && <span className="message-error">{errors.password.message}</span>}
-                                {errorLogin &&(
+                                {error &&(
                                     <>
                                         <span className="message-error">
-                                            {errorLogin}
+                                            {error.message}
                                         </span> 
                                     </>
                                 )}
