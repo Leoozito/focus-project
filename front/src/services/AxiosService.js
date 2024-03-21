@@ -4,12 +4,12 @@ const API_URL = "http://localhost:5294";
 
 const getUsers = async () => {
     const response = await axios.get(`${API_URL}/api/users`);
-    return response.data;
+    return response
 }
 
 const getDadosUserId = async (id) => {
     const response = await axios.get(`${API_URL}/api/users/${id}`);
-    return response.data;
+    return response
 }
 
 const loginService = async (dadosLogin) => {
@@ -20,7 +20,7 @@ const loginService = async (dadosLogin) => {
 
 const registerService = async (dadosUsuario) => {
     const response = await axios.post(`${API_URL}/api/users/register`, dadosUsuario);
-    return response.data
+    return response
 }
 
 export default {
