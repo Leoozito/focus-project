@@ -15,7 +15,7 @@ const getDadosUserId = async (id) => {
 const loginService = async (dadosLogin) => {
     const url = `${API_URL}/api/users/login`
     const response = await axios.post(url, dadosLogin);
-    return response.data
+    return response
 }
 
 const registerService = async (dadosUsuario) => {
