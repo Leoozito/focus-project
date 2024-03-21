@@ -12,6 +12,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import { useAuth } from "../../provider/authProvider";
+import Cookies from 'js-cookie';
 
 const Login = () => {
     const [email, setEmail] = React.useState("");
@@ -35,13 +37,17 @@ const Login = () => {
         PasswordHash: password
     }
 
+    const { setToken } = useAuth();
+    setTimeout(() => {
+        loginUser();
+    }, 3 * 1000);
+
     const loginUser = () => {
         axiosService.loginService(dadosLogin)
         .then((res) => {
-            const token = res.token;
-            localStorage.setItem('token', token);
-            console.log("Token", token)
-            window.location.href = "/"
+            setToken(res.token.token)
+            window.location.href = "/home"
+            Cookies.set('id', res.userSearch.id);
         })
         .catch((err) => {
             setErrorLogin(err.response.data)
@@ -116,7 +122,7 @@ const Login = () => {
                                 </div>
                                 <h1>Seja bem-vindo !</h1>
                                 <p>Insira seus dados pessoais e comece sua jornada conosco</p>
-                                <a href="users/sign-up">
+                                <a href="register">
                                     <Button
                                         name="Cadastre-se"
                                     />

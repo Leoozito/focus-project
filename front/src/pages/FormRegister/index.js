@@ -13,12 +13,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axiosService from '../../services/AxiosService';
 import getDadosCep from '../../services/CepService';
-import $ from 'jquery';
-import 'jquery-mask-plugin/dist/jquery.mask.min'; 
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
 
 const steps = ['Informações de dados cadastrais', 'Informações de localidade', 'Complementação'];
 
-export default function HorizontalLinearStepper() {
+export default function FormRegister() {
     // variaveis das divisões de tela
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
@@ -157,11 +159,36 @@ export default function HorizontalLinearStepper() {
       }
     }, [cep])
 
-    // MASK dos inputs
-    $(document).ready(function(){
-        $('.cep').mask('00000-000');
-        $('.phone_with_ddd').mask('(00) 00000-0000');
-    })
+    // funções abaixo formatam a digitação no input
+    const formatarTelefone = (telefone) => {
+        const cleaned = ('' + telefone).replace(/\D/g, '');
+        
+        const match = cleaned.match(/^(\d{2})(\d{4,5})(\d{4})$/);
+        if (match) {
+            return `(${match[1]}) ${match[2]}-${match[3]}`;
+        }
+
+        return telefone;
+    };
+
+    const handleTelefoneChange = (e) => {
+        setTelefone(formatarTelefone(e.target.value));
+    };
+
+    const formatarCep = (cep) => {
+      const cleaned = ('' + cep).replace(/\D/g, '');
+
+      const match = cleaned.match(/^(\d{5})(\d{3})$/);
+      if (match) {
+          return `${match[1]}-${match[2]}`;
+      }
+
+      return cep;
+    };
+
+    const handleCepChange = (e) => {
+        setCep(formatarCep(e.target.value));
+    };
 
     return(
       <>
@@ -224,6 +251,19 @@ export default function HorizontalLinearStepper() {
                         register={register("senha")}
                         onChange={(e) => setSenha(e.target.value)}
                         placeholder="Insira a senha para sua conta:" label="Senha"
+                        id="standard-adornment-password"
+                        type={showPassword ? 'text' : 'password'}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                     />
                     {errors.senha && <span className="message-error">{errors.senha.message}</span>}
                   </div>
@@ -235,6 +275,19 @@ export default function HorizontalLinearStepper() {
                         onChange={(e) => setConfirmeSenha(e.target.value)}
                         placeholder="Confirme sua senha:"
                         label="Confirmar senha"
+                        id="standard-adornment-password"
+                        type={showPassword ? 'text' : 'password'}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
                     />
                     {confirmeSenha != senha && <span className="message-error">Verifique suas senhas inseridas</span>}
                   </div>
@@ -243,7 +296,7 @@ export default function HorizontalLinearStepper() {
                     <Input
                         id="phone_with_ddd"
                         value={telefone}
-                        onChange={(e) => setTelefone(e.target.value)}
+                        onChange={handleTelefoneChange}
                         placeholder="Digite seu Telefone:"
                         label="Telefone"
                     />
@@ -259,7 +312,7 @@ export default function HorizontalLinearStepper() {
                           id="cep"
                           value={cep}
                           register={register("cep")}
-                          onChange={(e) => setCep(e.target.value)}
+                          onChange={handleCepChange}
                           placeholder="Digite seu CEP:"
                           label="CEP"
                       />
@@ -369,14 +422,22 @@ export default function HorizontalLinearStepper() {
                   </div>
                 )}
                 <div className="container-button">
-                    {activeStep > 0 && (
-                    <Button
+                    {activeStep > 0 ? (
+                      <Button
+                          type="button"
+                          name="Voltar"
+                          color="#1f2937"
+                          shadow="none"
+                          onClick={handleBack}
+                      />
+                    ): (
+                      <Button
                         type="button"
-                        name="Voltar"
+                        name="Voltar ao Login"
                         color="#1f2937"
                         shadow="none"
-                        onClick={handleBack}
-                    />
+                        onClick={() => window.location.href = '/'}
+                      />
                     )}
                     {activeStep == 2 ? (
                       <Button

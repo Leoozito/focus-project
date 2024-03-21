@@ -1,11 +1,11 @@
-import React from "react";
-import RoutesAuth from "./routes";
+import AuthProvider from "./provider/authProvider";
+import Routes from "./routes/routes";
 
-const App = () => {
+function App() {
   return (
-    <>
-      <RoutesAuth/>
-    </>
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
   );
 }
 

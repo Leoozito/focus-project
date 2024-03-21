@@ -1,10 +1,22 @@
-import './Navbar.css'
-import { useState, useEffect } from 'react';
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import {useEffect, useState} from 'react';
 
 const Navbar = () => {
 
     const [menuAberto, setMenuAberto] = useState(false);
     const [scrolling, setScrolling] = useState(false);
+
+    const Logout = () => {
+        localStorage.removeItem('token');
+        window.location.href = "/login"
+    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -21,104 +33,25 @@ const Navbar = () => {
     }, []);    
 
     return(
-        <header className="header">
-            <nav className="nav container">
-                <div className="nav__data">
-                    <a href="#" className="nav__logo">
-                        <i className="ri-planet-line"></i> PWI
-                    </a>
-                    
-                    <div className="nav__toggle" id="nav-toggle">
-                        <i className="ri-menu-line nav__burger"></i>
-                        <i className="ri-close-line nav__close"></i>
-                    </div>
-                </div>
-
-                <div className="nav__menu" id="nav-menu">
-                    <ul className="nav__list">
-                        <li><a href="#" className="nav__link">Home</a></li>
-
-                        <li><a href="#" className="nav__link">Company</a></li>
-
-                        <li className="dropdown__item">
-                            <div className="nav__link">
-                            Analytics <i className="ri-arrow-down-s-line dropdown__arrow"></i>
-                            </div>
-
-                            <ul className="dropdown__menu">
-                            <li>
-                                <a href="#" className="dropdown__link">
-                                    <i className="ri-pie-chart-line"></i> Overview
-                                </a>                          
-                            </li>
-
-                            <li>
-                                <a href="#" className="dropdown__link">
-                                    <i className="ri-arrow-up-down-line"></i> Transactions
-                                </a>
-                            </li>
-
-                            <li className="dropdown__subitem">
-                                <div className="dropdown__link">
-                                    <i className="ri-bar-chart-line"></i> Reports <i className="ri-add-line dropdown__add"></i>
-                                </div>
-
-                                <ul className="dropdown__submenu">
-                                    <li>
-                                        <a href="#" className="dropdown__sublink">
-                                        <i className="ri-file-list-line"></i> Documents
-                                        </a>
-                                    </li>
-            
-                                    <li>
-                                        <a href="#" className="dropdown__sublink">
-                                        <i className="ri-cash-line"></i> Payments
-                                        </a>
-                                    </li>
-            
-                                    <li>
-                                        <a href="#" className="dropdown__sublink">
-                                        <i className="ri-refund-2-line"></i> Refunds
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            </ul>
-                        </li>
-                        
-                        <li><a href="#" className="nav__link">Products</a></li>
-
-                        <li className="dropdown__item">
-                            <div className="nav__link">
-                            Users <i className="ri-arrow-down-s-line dropdown__arrow"></i>
-                            </div>
-
-                            <ul className="dropdown__menu">
-                            <li>
-                                <a href="#" className="dropdown__link">
-                                    <i className="ri-user-line"></i> Profiles
-                                </a>                          
-                            </li>
-
-                            <li>
-                                <a href="#" className="dropdown__link">
-                                    <i className="ri-lock-line"></i> Accounts
-                                </a>
-                            </li>
-
-                            <li>
-                                <a href="#" className="dropdown__link">
-                                    <i className="ri-message-3-line"></i> Messages
-                                </a>
-                            </li>
-                            </ul>
-                        </li>
-
-                        <li><a href="#" className="nav__link">Contact</a></li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
+        <>
+            <AppBar position="static">
+                <Toolbar>
+                <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    sx={{ mr: 2 }}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    PWI
+                </Typography>
+                <Button onClick={Logout} color="inherit">Sair</Button>
+                </Toolbar>
+            </AppBar>
+        </>
     )
 }
 

@@ -51,6 +51,7 @@
 }
 
 .img-input img {
+	border-radius: 999px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -75,29 +76,22 @@
 	}
 }
 
+@media screen and (max-width: 600px) {
+	.form-register {
+		margin: 60px 10px 10px 20px;
+	}
+}
+
 .input-cep {
 	position: relative;
-	color: #aaa;
 	font-size: 16px;
-  }
+}
   
 .input-cep { display: inline-block; }
 
-.input-cep input {
-	width: 250px;
-	height: 32px;
-
-	background: #fcfcfc;
-	border: 1px solid #aaa;
-	border-radius: 5px;
-	box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
-}
-
-.input-cep input { text-indent: 32px;}
 .input-cep .icon-search { 
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: 49px;
 }
 
-.input-cep .icon-search {left: auto; right: 10px;}
+.input-cep .icon-search {color: #aaa;	left: auto; right: 20px;}

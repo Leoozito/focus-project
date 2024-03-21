@@ -44,7 +44,7 @@ namespace api.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById([FromRoute] int id)
+        public IActionResult GetById([FromRoute] string id)
         {
             var user = _context.Users.Find(id);
 
@@ -117,7 +117,7 @@ namespace api.Controllers
 
             var token = TokenService.GenerateToken(new Users());
 
-            return Ok(token);
+            return Ok(new { userSearch, token });
         }
     }
 }
