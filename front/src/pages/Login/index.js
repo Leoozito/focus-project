@@ -7,18 +7,23 @@ import axiosService from '../../services/AxiosService';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import React from "react";
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import { useAuth } from "../../provider/authProvider";
 import Cookies from 'js-cookie';
+import Modal from '../../components/Modal';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import { useState } from 'react';
 
 const Login = () => {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [error, setError] = React.useState("");
+    const [modalAlert, setModalAlert] = useState(false);
+    const [modalConteudo, setModalConteudo] = useState("")
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const schema = z.object({
         email: z.string()
@@ -48,14 +53,16 @@ const Login = () => {
         })
         .catch((err) => {
             if (err.response) {
-                setError(err.response.data);
-            } else if (err.request) {
-                setError(err)
+                setModalConteudo(err.response.data);
+                setModalAlert(true)
+            } else {
+                setModalConteudo("Verifique se o servidor está ativo")
+                setModalAlert(true)
             }
         })
     }
 
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
@@ -65,6 +72,15 @@ const Login = () => {
 
     return(
         <>
+            {modalAlert && (
+                <Modal
+                    iconColor="#facc15"
+                    title="Alerta"
+                    conteudo={modalConteudo}
+                    openModal={modalAlert}
+                    icon={<AnnouncementIcon/>}
+                />
+            )}
             <div className="container-login">
                 <div className="login">
                     <Form onSubmit={handleSubmit(loginUser)}>
@@ -72,10 +88,10 @@ const Login = () => {
                             <div className="div1">
                                 <h1>Faça seu Login</h1>
                                 <div className="social-container">
-                                    <a href="#" className="social">
+                                    {/* <a href="#" className="social">
                                         <GoogleIcon/>
                                         <p>Entrar com o Google</p>
-                                    </a>
+                                    </a> */}
                                 </div>
                                 <Input 
                                     placeholder="Email" 

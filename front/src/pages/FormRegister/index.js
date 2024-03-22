@@ -17,10 +17,19 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
+import Modal from '../../components/Modal';
+import CheckIcon from '@mui/icons-material/Check';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
 
 const steps = ['Informações de dados cadastrais', 'Informações de localidade', 'Complementação'];
 
 export default function FormRegister() {
+    const [modalSucess, setModalSucess] = useState(false);
+    const [modalError, setModalError] = useState(false);
+    const [modalAlert, setModalAlert] = useState(false);
+    const [modalConteudo, setModalConteudo] = useState("")
+
     // variaveis das divisões de tela
     const [activeStep, setActiveStep] = useState(0);
 
@@ -69,7 +78,7 @@ export default function FormRegister() {
         estado: z.string()
         .nonempty("Campo obrigatório!")
     });
-    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema)
     });
 
@@ -126,15 +135,22 @@ export default function FormRegister() {
     }
 
     const registerUser = () => {
+        if (errors) {
+          setModalConteudo("Verifique se todos os campos obrigatórios estão preenchidos")
+          setModalAlert(true)
+        }
         axiosService.registerService(dadosRegister)
         .then((res) => {
-            console.log(res)            
+            setModalConteudo("Cadastrado efetuado com sucesso")
+            setModalSucess(true)        
         })
         .catch((err) => {
           if (err.response) {
-            setErrorRegister(err.response.data)
+            setModalConteudo(err.response.data)
+            setModalError(true)
           } else {
-            setErrorRegister(err)
+            setModalConteudo("Verifique se o servidor está ativado")
+            setModalError(true)
           }
         })
     }
@@ -149,6 +165,8 @@ export default function FormRegister() {
           setEndereco(res.logradouro)
         })
         .catch((err) => {
+          setModalError(true)
+          setModalConteudo(err)
           console.log(err)
         })
     }
@@ -218,6 +236,32 @@ export default function FormRegister() {
 
     return(
       <>
+        {modalSucess && (
+          <Modal
+            conteudo={modalConteudo}
+            openModal={modalSucess}
+            icon={<CheckIcon/>}
+            iconColor="#16a34a"
+          />
+        )}
+        {modalAlert && (
+          <Modal
+            title="Alerta"
+            conteudo={modalConteudo}
+            openModal={modalAlert}
+            icon={<AnnouncementIcon/>}
+            iconColor="#facc15"
+          />
+        )}
+        {modalError && (
+          <Modal
+            title="Erro ao efetuar o registro"
+            conteudo={modalConteudo}
+            openModal={modalError}
+            icon={<CancelPresentationIcon/>}
+            iconColor="#ef4444"
+          />
+        )}
         <div className="form-register">
           <Stepper 
               activeStep={activeStep}
