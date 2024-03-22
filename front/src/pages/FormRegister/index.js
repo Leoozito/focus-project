@@ -78,17 +78,23 @@ export default function FormRegister() {
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
-    const handleMouseDownPassword = (event) => {
-      event.preventDefault();
+    const handleMouseDownPassword = (e) => {
+      e.preventDefault();
     };
 
     // funções para inserção de IMAGEM
     const handleChangeClick = () => {
       inputRef.current.click();
     };
-    const handleImageChange = (event) => {
-      const file = event.target.files[0];
-      setImageProfile(file);
+    const handleImageChange = (e) => {
+      if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0]
+        const reader = new FileReader()
+        reader.onload = (x) => {
+          setImageProfile(x.target.result)
+        }
+        reader.readAsDataURL(file)
+      }
     };
 
     const handleNext = () => {
@@ -125,7 +131,11 @@ export default function FormRegister() {
             console.log(res)            
         })
         .catch((err) => {
-          setErrorRegister(err.response.data)
+          if (err.response) {
+            setErrorRegister(err.response.data)
+          } else {
+            setErrorRegister(err)
+          }
         })
     }
 
@@ -180,6 +190,31 @@ export default function FormRegister() {
     const handleCepChange = (e) => {
         setCep(formatarCep(e.target.value));
     };
+
+    // multipla funções nos botões de "VOLTAR" e "PRÓXIMO"
+    const handleButtonVoltar = () => {
+      if (activeStep === 0) {
+        window.location.href = '/'
+      } else {
+        handleBack()
+      }
+    }
+
+    const handleButtonProximo = () => {
+      if (activeStep === 2) {
+        registerUser()
+      } else {
+        handleNext()
+      }
+    }
+
+    const handleButtonImage = () => {
+      if (!imageProfile) {
+        handleChangeClick()
+      } else {
+        setImageProfile("")
+      }
+    }
 
     return(
       <>
@@ -376,7 +411,7 @@ export default function FormRegister() {
                         {imageProfile ? (
                           <>
                               <img
-                                  src={URL.createObjectURL(imageProfile)}
+                                  src={imageProfile}
                                   alt=""
                               />
                           </>
@@ -401,10 +436,10 @@ export default function FormRegister() {
                   <div className="container-button">
                       <Button
                           type="button"
-                          onClick={handleChangeClick}
+                          onClick={handleButtonImage}
                           color="transparent"
                           textColor="#3355ff"
-                          name={`${imageProfile ? ("Retirar Foto") : ("Inserir Imagem") }`}
+                          name={imageProfile ? "Retirar Foto" : "Inserir Imagem"}
                           shadow="1px 2px 36px -11px rgba(51,85,255,1)"
                       />
                   </div>
@@ -415,12 +450,12 @@ export default function FormRegister() {
                       name={activeStep === 0 ? "Voltar ao Login" :  "Voltar"}
                       color="#1f2937"
                       shadow="none"
-                      onClick={activeStep === 0 ? (() => window.location.href = '/') : (handleBack)}
+                      onClick={handleButtonVoltar}
                     />
                     <Button
-                      type={activeStep === 2 ? 'button' : 'submit'}
+                      type='button'
                       name={activeStep === 2 ? 'Enviar' : 'Próximo'}
-                      onClick={activeStep != 2 && handleNext}
+                      onClick={handleButtonProximo}
                     />
                 </div>
               </div>
