@@ -58,9 +58,15 @@ const HomePage = () => {
     const handleChangeClick = () => {
         inputRef.current.click();
     };
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        setImgProfile(file);
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0]
+            const reader = new FileReader()
+            reader.onload = (x) => {
+              setImgProfile(x.target.result)
+            }
+            reader.readAsDataURL(file)
+        }
     };
 
     useEffect(() => {
@@ -75,7 +81,7 @@ const HomePage = () => {
                     {imgProfile ? (
                         <>
                             <img
-                                src={URL.createObjectURL(imgProfile)}
+                                src={imgProfile}
                                 alt=""
                             />
                         </>
