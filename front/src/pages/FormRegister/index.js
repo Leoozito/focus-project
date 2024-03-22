@@ -83,7 +83,7 @@ export default function FormRegister() {
       event.preventDefault();
     };
 
-    // funções para inserção de imagem
+    // funções para inserção de IMAGEM
     const handleChangeClick = () => {
       inputRef.current.click();
     };
@@ -106,6 +106,7 @@ export default function FormRegister() {
 
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
+      console.log(activeStep)
     };
 
     const handleBack = () => {
@@ -134,8 +135,7 @@ export default function FormRegister() {
     const registerUser = () => {
         axiosService.registerService(dadosRegister)
         .then((res) => {
-            console.log(res)
-            setEstado(res.uf)
+            console.log(res)            
         })
         .catch((err) => {
           setErrorRegister(err.response.data)
@@ -146,7 +146,10 @@ export default function FormRegister() {
     const buscaCep = () => {
         getDadosCep(cep)
         .then((res) => {
-          console.log("DADOS",res)
+          setEstado(res.uf)
+          setBairro(res.bairro)
+          setCidade(res.localidade)
+          setEndereco(res.logradouro)
         })
         .catch((err) => {
           console.log(err)
@@ -154,7 +157,8 @@ export default function FormRegister() {
     }
 
     useEffect(() => {
-      if (cep.length == 8) {
+      console.log(cep.length)
+      if (cep.length >= 8) {
         buscaCep()
       }
     }, [cep])

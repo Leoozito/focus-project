@@ -103,10 +103,10 @@ const Login = () => {
                                     }  
                                 />
                                 {errors.password && <span className="message-error">{errors.password.message}</span>}
-                                {error &&(
+                                {error && (
                                     <>
                                         <span className="message-error">
-                                            {error.message}
+                                            {error}
                                         </span> 
                                     </>
                                 )}
