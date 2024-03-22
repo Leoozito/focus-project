@@ -15,7 +15,7 @@ const Navbar = () => {
 
     const Logout = () => {
         localStorage.removeItem('token');
-        window.location.href = "/login"
+        window.location.href = "/"
     }
 
     useEffect(() => {
