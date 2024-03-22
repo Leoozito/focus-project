@@ -71,8 +71,8 @@ const Login = () => {
                         <div className="div1-container">
                             <div className="div1">
                                 <h1>Faça seu Login</h1>
-                                <div class="social-container">
-                                    <a href="#" class="social">
+                                <div className="social-container">
+                                    <a href="#" className="social">
                                         <GoogleIcon/>
                                         <p>Entrar com o Google</p>
                                     </a>

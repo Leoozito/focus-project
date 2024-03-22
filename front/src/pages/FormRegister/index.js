@@ -23,7 +23,6 @@ const steps = ['Informações de dados cadastrais', 'Informações de localidade
 export default function FormRegister() {
     // variaveis das divisões de tela
     const [activeStep, setActiveStep] = useState(0);
-    const [skipped, setSkipped] = useState(new Set());
 
     const [nome, setNome] = useState("");
     const [username, setUsername] = useState("");
@@ -92,24 +91,12 @@ export default function FormRegister() {
       setImageProfile(file);
     };
 
-    // funções que ativam botões dos STEP (botões de "Voltar" e "Próximo")
-    const isStepSkipped = (step) => {
-      return skipped.has(step);
-    };
-    
     const handleNext = () => {
-      let newSkipped = skipped;
-      if (isStepSkipped(activeStep)) {
-        newSkipped = new Set(newSkipped.values());
-        newSkipped.delete(activeStep);
-      }
-
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-      setSkipped(newSkipped);
-      console.log(activeStep)
     };
 
     const handleBack = () => {
+      console.log(imageProfile)
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
@@ -200,14 +187,10 @@ export default function FormRegister() {
           <Stepper 
               activeStep={activeStep}
           >
-            {steps.map((label, index) => {
-                const stepProps = {};
+            {steps.map((label) => {
                 const labelProps = {};
-                if (isStepSkipped(index)) {
-                  stepProps.completed = false;
-                }
                 return (
-                  <Step key={label} {...stepProps}>
+                  <Step key={label}>
                     <StepLabel {...labelProps}>{label}</StepLabel>
                   </Step>
                 );
@@ -417,6 +400,7 @@ export default function FormRegister() {
                 {activeStep === 2 && (
                   <div className="container-button">
                       <Button
+                          type="button"
                           onClick={handleChangeClick}
                           color="transparent"
                           textColor="#3355ff"
@@ -426,35 +410,18 @@ export default function FormRegister() {
                   </div>
                 )}
                 <div className="container-button">
-                    {activeStep > 0 ? (
-                      <Button
-                          type="button"
-                          name="Voltar"
-                          color="#1f2937"
-                          shadow="none"
-                          onClick={handleBack}
-                      />
-                    ): (
-                      <Button
-                        type="button"
-                        name="Voltar ao Login"
-                        color="#1f2937"
-                        shadow="none"
-                        onClick={() => window.location.href = '/'}
-                      />
-                    )}
-                    {activeStep == 2 ? (
-                      <Button
-                        type="subnit"
-                        name='Enviar'
-                      />
-                    ) : (
-                      <Button
-                        type='button'
-                        name='Próximo'
-                        onClick={handleNext}
-                      />
-                    )}
+                    <Button
+                      type="button"
+                      name={activeStep === 0 ? "Voltar ao Login" :  "Voltar"}
+                      color="#1f2937"
+                      shadow="none"
+                      onClick={activeStep === 0 ? (() => window.location.href = '/') : (handleBack)}
+                    />
+                    <Button
+                      type={activeStep === 2 ? 'button' : 'submit'}
+                      name={activeStep === 2 ? 'Enviar' : 'Próximo'}
+                      onClick={activeStep != 2 && handleNext}
+                    />
                 </div>
               </div>
             </div>
