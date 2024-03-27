@@ -30,3 +30,13 @@
     border-color: rgb(99 102 241);
 }
 
+.label {
+    display: flex;
+    align-items: center;
+}
+
+.label span {
+    font-size: 22px;
+    color: #d60c0c;
+    margin-left: 5px;
+}

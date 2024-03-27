@@ -16,10 +16,17 @@ import Cookies from 'js-cookie';
 import Modal from '../../components/Modal';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import { useState } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Login = () => {
     const [modalAlert, setModalAlert] = useState(false);
     const [modalConteudo, setModalConteudo] = useState("")
+
+    const closeModal = () => {
+        setModalAlert(false)
+    }
+
+    const [loading, setLoading] = useState(false);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -45,6 +52,7 @@ const Login = () => {
     const { setToken } = useAuth();
 
     const loginUser = () => {
+        setLoading(true);
         axiosService.loginService(dadosLogin)
         .then((res) => {
             setToken(res.token.token)
@@ -60,6 +68,9 @@ const Login = () => {
                 setModalAlert(true)
             }
         })
+        .finally(() => {
+            setLoading(false);
+        });
     }
 
     const [showPassword, setShowPassword] = useState(false);
@@ -72,8 +83,14 @@ const Login = () => {
 
     return(
         <>
+            {loading && ( 
+                <div className="loading-background"> 
+                    <CircularProgress />
+                </div>
+            )}
             {modalAlert && (
                 <Modal
+                    onClose={closeModal}
                     iconColor="#facc15"
                     title="Alerta"
                     conteudo={modalConteudo}

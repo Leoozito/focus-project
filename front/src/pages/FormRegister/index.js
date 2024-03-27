@@ -30,6 +30,11 @@ export default function FormRegister() {
     const [modalAlert, setModalAlert] = useState(false);
     const [modalConteudo, setModalConteudo] = useState("")
 
+    const closeModal = () => {
+        setModalSucess(false)
+        setModalError(false)
+        setModalAlert(false)
+    }
     // variaveis das divisões de tela
     const [activeStep, setActiveStep] = useState(0);
 
@@ -111,7 +116,6 @@ export default function FormRegister() {
     };
 
     const handleBack = () => {
-      console.log(imageProfile)
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
@@ -238,6 +242,7 @@ export default function FormRegister() {
       <>
         {modalSucess && (
           <Modal
+            onClose={closeModal}
             conteudo={modalConteudo}
             openModal={modalSucess}
             icon={<CheckIcon/>}
@@ -246,6 +251,7 @@ export default function FormRegister() {
         )}
         {modalAlert && (
           <Modal
+            onClose={closeModal}
             title="Alerta"
             conteudo={modalConteudo}
             openModal={modalAlert}
@@ -255,6 +261,7 @@ export default function FormRegister() {
         )}
         {modalError && (
           <Modal
+            onClose={closeModal}
             title="Erro ao efetuar o registro"
             conteudo={modalConteudo}
             openModal={modalError}
@@ -280,6 +287,7 @@ export default function FormRegister() {
               <>
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={nome}
                         register={register("nome")}
                         onChange={(e) => setNome(e.target.value)}
@@ -291,6 +299,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={username}
                         register={register("username")}
                         onChange={(e) => setUsername(e.target.value)}
@@ -302,6 +311,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={email}
                         register={register("email")}
                         onChange={(e) => setEmail(e.target.value)}
@@ -313,6 +323,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={senha}
                         register={register("senha")}
                         onChange={(e) => setSenha(e.target.value)}
@@ -336,6 +347,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={confirmeSenha}
                         register={register("confirmeSenha")}
                         onChange={(e) => setConfirmeSenha(e.target.value)}
@@ -375,6 +387,7 @@ export default function FormRegister() {
                   <div className="container-input-span-info">
                     <div className="input-cep">
                       <Input
+                          required={true}
                           id="cep"
                           value={cep}
                           register={register("cep")}
@@ -391,6 +404,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={endereco}
                         register={register("endereco")}
                         onChange={(e) => setEndereco(e.target.value)}
@@ -402,6 +416,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={numero}
                         register={register("numero")}
                         onChange={(e) => setNumero(e.target.value)}
@@ -413,6 +428,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={bairro}
                         register={register("bairro")}
                         onChange={(e) => setBairro(e.target.value)}
@@ -424,6 +440,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={cidade}
                         register={register("cidade")}
                         onChange={(e) => setCidade(e.target.value)}
@@ -435,6 +452,7 @@ export default function FormRegister() {
 
                   <div className="container-input-span-info">
                     <Input
+                        required={true}
                         value={estado}
                         register={register("estado")}
                         onChange={(e) => setEstado(e.target.value)}
@@ -447,34 +465,34 @@ export default function FormRegister() {
               </>
             )}
             <div className='container-main'>
-              <div className="container-insert-img">
-                {activeStep === 2 && (
-                  <>
-                    <div className="img-input" data-img="" onClick={handleChangeClick}>
-                        {/* Parte de colocar foto e colocar um "Sobre Mim" */}
-                        {imageProfile ? (
-                          <>
-                              <img
-                                  src={imageProfile}
-                                  alt=""
-                              />
-                          </>
-                        ) : (
-                          <>
-                              <PersonIcon className="icon" fontSize='44'/>
-                          </>
-                        )}
-                        <input
-                          type="file"
-                          ref={inputRef}
-                          onChange={handleImageChange}
-                          id="file"
-                          hidden
-                        />
+              {activeStep === 2 && (
+                <>
+                  <div className="container-insert-img">
+                      <div className="img-input" data-img="" onClick={handleChangeClick}>
+                          {/* Parte de colocar foto e colocar um "Sobre Mim" */}
+                          {imageProfile ? (
+                            <>
+                                <img
+                                    src={imageProfile}
+                                    alt=""
+                                />
+                            </>
+                          ) : (
+                            <>
+                                <PersonIcon className="icon" fontSize='44'/>
+                            </>
+                          )}
+                          <input
+                            type="file"
+                            ref={inputRef}
+                            onChange={handleImageChange}
+                            id="file"
+                            hidden
+                          />
+                      </div>
                     </div>
-                  </>
-                )}
-              </div>
+                </>
+              )}
               <div className='container-button-group'>
                 {activeStep === 2 && (
                   <div className="container-button">
