@@ -37,7 +37,7 @@ const Login = () => {
         .nonempty("Campo obrigatório!")
         .email("Formato de email invalido"),
 
-        password: z.string().min(8),
+        password: z.string().min(8, {message: 'A senha deve ter pelo menos 6 caracteres'}),
     });
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm({

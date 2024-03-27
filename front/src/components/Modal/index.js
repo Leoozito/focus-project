@@ -2,7 +2,6 @@ import './Modal.css'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const Modal = ({title, conteudo, openModal, icon, iconColor, onClose}) => {
-    console.log(openModal)
 
     return (
         <>

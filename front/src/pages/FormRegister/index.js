@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import axiosService from '../../services/AxiosService';
-import getDadosCep from '../../services/CepService';
+import CepService from '../../services/CepService';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -62,17 +62,19 @@ export default function FormRegister() {
     const inputRef = useRef();
     const [imageProfile, setImageProfile] = useState("");
 
-    const [errorRegister, setErrorRegister] = useState("");
     // Validação dos inputs com ZOD
     const schema = z.object({
         nome: z.string()
         .nonempty("Campo obrigatório!"),
         username: z.string()
-        .nonempty("Campo obrigatório!"),
+        .nonempty("Campo obrigatório!")
+        .regex(/^[A-Za-z]+$/i, "Apenas letras são permitidas"),
         email: z.string()
-        .nonempty("Campo obrigatório!"),
-        senha: z.string().min(8),
-        confirmeSenha: z.string().min(8),
+        .nonempty("Campo obrigatório!")
+        .email("Formato de email invalido"),
+
+        senha: z.string().min(8, {message: 'A senha deve ter pelo menos 6 caracteres'}),
+        confirmeSenha: z.string().min(8, {message: 'A senha deve ter pelo menos 6 caracteres'}),
 
         cep: z.string()
         .nonempty("Campo obrigatório!"),
@@ -86,8 +88,13 @@ export default function FormRegister() {
         .nonempty("Campo obrigatório!"),
         estado: z.string()
         .nonempty("Campo obrigatório!")
+    })
+    .refine(({ senha, confirmeSenha}) => senha === confirmeSenha, {
+      message: "A confirmação de senha não corresponde",
+      path: ["confirm_password"]
     });
-    const { register, handleSubmit, formState: { errors } } = useForm({
+
+    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: zodResolver(schema)
     });
 
@@ -143,11 +150,12 @@ export default function FormRegister() {
     }
 
     const registerUser = () => {
+        setLoading(true);
+
         if (errors) {
           setModalConteudo("Verifique se todos os campos obrigatórios estão preenchidos")
           setModalAlert(true)
         }
-        setLoading(true);
         axiosService.registerService(dadosRegister)
         .then((res) => {
             setModalConteudo("Cadastrado efetuado com sucesso")
@@ -169,12 +177,13 @@ export default function FormRegister() {
 
     // função de auto pesquisa de CEP
     const buscaCep = () => {
-        getDadosCep(cep)
+        CepService.getDadosCep(cep)
         .then((res) => {
-          setEstado(res.uf)
-          setBairro(res.bairro)
-          setCidade(res.localidade)
-          setEndereco(res.logradouro)
+          console.log(res);
+          setValue('estado', res.uf);
+          setValue('bairro', res.bairro);
+          setValue('cidade', res.localidade);
+          setValue('endereco', res.logradouro);
         })
         .catch((err) => {
           setModalError(true)
@@ -184,7 +193,6 @@ export default function FormRegister() {
     }
 
     useEffect(() => {
-      console.log(cep.length)
       if (cep.length >= 8) {
         buscaCep()
       }
@@ -208,7 +216,6 @@ export default function FormRegister() {
 
     const formatarCep = (cep) => {
       const cleaned = ('' + cep).replace(/\D/g, '');
-
       const match = cleaned.match(/^(\d{5})(\d{3})$/);
       if (match) {
           return `${match[1]}-${match[2]}`;
@@ -216,7 +223,6 @@ export default function FormRegister() {
 
       return cep;
     };
-
     const handleCepChange = (e) => {
         setCep(formatarCep(e.target.value));
     };
@@ -231,9 +237,7 @@ export default function FormRegister() {
     }
 
     const handleButtonProximo = () => {
-      if (activeStep === 2) {
-        registerUser()
-      } else {
+      if (activeStep != 2) {
         handleNext()
       }
     }
@@ -278,7 +282,7 @@ export default function FormRegister() {
             title="Erro ao efetuar o registro"
             conteudo={modalConteudo}
             openModal={modalError}
-            icon={<CancelPresentationIcon sx={{ fontSize: 60 }}/>}
+            icon={<CancelPresentationIcon sx={{ fontSize: 80 }}/>}
             iconColor="#ef4444"
           />
         )}
@@ -407,8 +411,9 @@ export default function FormRegister() {
                           onChange={handleCepChange}
                           placeholder="Digite seu CEP:"
                           label="CEP"
+                          onBlur={buscaCep}
                       />
-                      <a href="">
+                      <a onClick={buscaCep}>
                         <span className="icon-search"><SearchIcon/></span>
                       </a>
                     </div>
@@ -528,7 +533,7 @@ export default function FormRegister() {
                       onClick={handleButtonVoltar}
                     />
                     <Button
-                      type='button'
+                      type={activeStep === 2 ? 'submit' : 'button'}
                       name={activeStep === 2 ? 'Enviar' : 'Próximo'}
                       onClick={handleButtonProximo}
                     />

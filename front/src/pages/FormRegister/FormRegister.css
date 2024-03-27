@@ -87,11 +87,9 @@
 	font-size: 16px;
 }
   
-.input-cep { display: inline-block; }
-
 .input-cep .icon-search { 
 	position: absolute;
-	top: 49px;
+	top: 53px;
 }
 
 .input-cep .icon-search {color: #aaa;	left: auto; right: 20px;}

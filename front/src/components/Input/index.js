@@ -1,6 +1,6 @@
 import './Input.css'
 
-const Input = ({disabled, endAdornment, type, id , label, placeholder, register, onChange, value, required}) => {
+const Input = ({disabled, endAdornment, type, id , label, placeholder, register, onChange, value, required, onBlur}) => {
     
     console.log(value)
     return(
@@ -21,6 +21,7 @@ const Input = ({disabled, endAdornment, type, id , label, placeholder, register,
                 placeholder={placeholder} 
                 {...register}
                 onChange={onChange}
+                onBlur={onBlur}
             />
         </div>
     )

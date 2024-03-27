@@ -7,4 +7,6 @@ const getDadosCep = async (cep) => {
     return response.data;
 }
 
-export default getDadosCep;
+export default {
+    getDadosCep
+};
