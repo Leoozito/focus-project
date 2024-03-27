@@ -21,6 +21,7 @@ import Modal from '../../components/Modal';
 import CheckIcon from '@mui/icons-material/Check';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const steps = ['Informações de dados cadastrais', 'Informações de localidade', 'Complementação'];
 
@@ -35,6 +36,9 @@ export default function FormRegister() {
         setModalError(false)
         setModalAlert(false)
     }
+
+    const [loading, setLoading] = useState(false);
+
     // variaveis das divisões de tela
     const [activeStep, setActiveStep] = useState(0);
 
@@ -143,6 +147,7 @@ export default function FormRegister() {
           setModalConteudo("Verifique se todos os campos obrigatórios estão preenchidos")
           setModalAlert(true)
         }
+        setLoading(true);
         axiosService.registerService(dadosRegister)
         .then((res) => {
             setModalConteudo("Cadastrado efetuado com sucesso")
@@ -157,6 +162,9 @@ export default function FormRegister() {
             setModalError(true)
           }
         })
+        .finally(() => {
+          setLoading(false);
+        });
     }
 
     // função de auto pesquisa de CEP
@@ -240,6 +248,11 @@ export default function FormRegister() {
 
     return(
       <>
+        {loading && ( 
+            <div className="loading-background"> 
+                <CircularProgress />
+            </div>
+        )}
         {modalSucess && (
           <Modal
             onClose={closeModal}
