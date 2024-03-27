@@ -245,7 +245,7 @@ export default function FormRegister() {
             onClose={closeModal}
             conteudo={modalConteudo}
             openModal={modalSucess}
-            icon={<CheckIcon/>}
+            icon={<CheckIcon sx={{ fontSize: 60 }}/>}
             iconColor="#16a34a"
           />
         )}
@@ -255,7 +255,7 @@ export default function FormRegister() {
             title="Alerta"
             conteudo={modalConteudo}
             openModal={modalAlert}
-            icon={<AnnouncementIcon/>}
+            icon={<AnnouncementIcon sx={{ fontSize: 60 }}/>}
             iconColor="#facc15"
           />
         )}
@@ -265,7 +265,7 @@ export default function FormRegister() {
             title="Erro ao efetuar o registro"
             conteudo={modalConteudo}
             openModal={modalError}
-            icon={<CancelPresentationIcon/>}
+            icon={<CancelPresentationIcon sx={{ fontSize: 60 }}/>}
             iconColor="#ef4444"
           />
         )}

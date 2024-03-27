@@ -95,7 +95,7 @@ const Login = () => {
                     title="Alerta"
                     conteudo={modalConteudo}
                     openModal={modalAlert}
-                    icon={<AnnouncementIcon/>}
+                    icon={<AnnouncementIcon sx={{ fontSize: 60 }}/>}
                 />
             )}
             <div className="container-login">

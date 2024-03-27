@@ -12,14 +12,14 @@ const Modal = ({title, conteudo, openModal, icon, iconColor, onClose}) => {
                         <div className='container-modal'>
                             <div className="container-modal-close">
                                 <a onClick={onClose}>
-                                    <HighlightOffIcon/>
+                                    <HighlightOffIcon sx={{ fontSize: 30 }}/>
                                 </a>
                             </div>
                             <div className='container-modal-title'>
                                 <h1>{title}</h1>
                             </div>
                             <div className="container-modal-content">
-                                <span style={{color: iconColor}}>
+                                <span style={{color: iconColor}} >
                                     {icon}
                                 </span>
                                 <p>{conteudo}</p>
