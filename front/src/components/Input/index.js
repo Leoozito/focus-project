@@ -2,7 +2,6 @@ import './Input.css'
 
 const Input = ({disabled, endAdornment, type, id , label, placeholder, register, onChange, value, required, onBlur}) => {
     
-    console.log(value)
     return(
         <div className='input-text'>
             <div className="label">

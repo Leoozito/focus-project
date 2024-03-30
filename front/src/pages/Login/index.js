@@ -151,9 +151,10 @@ const Login = () => {
                     <div className="div2-container">
                         <div className="div2">
                             <div className="overlay-panel overlay-right">
-                                <div className="img-container">
-                                    <img src="https://pwi.com.br/wp-content/uploads/2023/11/logo-pwi.svg"/>
-                                </div>
+                                <img 
+                                    src="../logos/main-logo.png"
+                                    className="img-container"
+                                />
                                 <h1>Seja bem-vindo !</h1>
                                 <p>Insira seus dados pessoais e comece sua jornada conosco</p>
                                 <a href="register">
