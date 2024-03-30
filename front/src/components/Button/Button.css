@@ -1,5 +1,5 @@
 .botao button {
-    background-color: #2dd4bf;
+    background-color: #15008a;
     border-radius: 10px;
     font-weight: 700;
     font-size: 18px;
@@ -12,5 +12,5 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+    box-shadow: 0px 15px 20px rgba(52, 46, 229, 0.4);
 }
