@@ -1,7 +1,10 @@
 import './Input.css'
+import {forwardRef} from 'react'
 
-const Input = ({disabled, endAdornment, type, id , label, placeholder, register, onChange, value, required, onBlur}) => {
+const Input = forwardRef(({disabled, endAdornment, type, id , label, placeholder, onChange, value, required, onBlur, ...rest}, ref) => {
     
+    console.log("VALUE COMPONENT INPUT: ",value)
+
     return(
         <div className='input-text'>
             <div className="label">
@@ -11,6 +14,8 @@ const Input = ({disabled, endAdornment, type, id , label, placeholder, register,
                 )}
             </div>
             <input 
+                ref={ref}
+                {...rest}
                 required={required}
                 disabled={disabled}
                 endAdornment={endAdornment}
@@ -18,12 +23,10 @@ const Input = ({disabled, endAdornment, type, id , label, placeholder, register,
                 id={id}
                 value={value}
                 placeholder={placeholder} 
-                {...register}
                 onChange={onChange}
                 onBlur={onBlur}
             />
         </div>
-    )
-}
-
+    );
+});
 export default Input;

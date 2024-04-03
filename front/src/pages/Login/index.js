@@ -15,7 +15,7 @@ import { useAuth } from "../../provider/authProvider";
 import Cookies from 'js-cookie';
 import Modal from '../../components/Modal';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const Login = () => {
@@ -113,7 +113,7 @@ const Login = () => {
                                 <Input 
                                     value={email}
                                     placeholder="Email" 
-                                    register={register("email")}  
+                                    {...register("email")}  
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                                 {errors.email && <span className="message-error">{errors.email.message}</span>}
@@ -121,8 +121,9 @@ const Login = () => {
                                 <Input 
                                     value={password}
                                     placeholder="Senha"
-                                    register={register("password")}
+                                    {...register("password")}
                                     onChange={(e) => setPassword(e.target.value)}
+
                                     id="standard-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
                                     endAdornment={
