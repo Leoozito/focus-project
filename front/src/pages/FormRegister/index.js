@@ -99,7 +99,7 @@ export default function FormRegister() {
     });
 
     // funções direto do MUI, para controlar visualização de senha
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
   
@@ -149,13 +149,15 @@ export default function FormRegister() {
       ImageProfile : imageProfile,            
     }
 
+    useEffect(() => {
+      if (errors) {
+        setModalConteudo("Verifique se todos os campos obrigatórios estão preenchidos")
+        setModalAlert(true)
+      }  
+    },[errors])
+
     const registerUser = () => {
         setLoading(true);
-
-        if (errors) {
-          setModalConteudo("Verifique se todos os campos obrigatórios estão preenchidos")
-          setModalAlert(true)
-        }
         axiosService.registerService(dadosRegister)
         .then((res) => {
             setModalConteudo("Cadastrado efetuado com sucesso")
@@ -175,11 +177,15 @@ export default function FormRegister() {
         });
     }
 
+    useEffect(() => {
+      console.log("VALUES --", "cidade",cidade ,"estado", estado ,"endereco",endereco)
+    }, [cep])
+
     // função de auto pesquisa de CEP
     const buscaCep = () => {
         CepService.getDadosCep(cep)
         .then((res) => {
-          console.log(res);
+          setCep(res.cep)
           setValue('estado', res.uf);
           setValue('bairro', res.bairro);
           setValue('cidade', res.localidade);
@@ -306,7 +312,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={nome}
-                        register={register("nome")}
+                        {...register("nome")}
                         onChange={(e) => setNome(e.target.value)}
                         placeholder="Digite seu Nome:"
                         label="Nome"
@@ -318,7 +324,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={username}
-                        register={register("username")}
+                        {...register("username")}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Digite seu Username:"
                         label="Username"
@@ -330,7 +336,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={email}
-                        register={register("email")}
+                        {...register("email")}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Digite seu Email:"
                         label="Email"
@@ -342,9 +348,10 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={senha}
-                        register={register("senha")}
+                        {...register("senha")}
                         onChange={(e) => setSenha(e.target.value)}
                         placeholder="Insira a senha para sua conta:" label="Senha"
+                        
                         id="standard-adornment-password"
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
@@ -366,10 +373,11 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={confirmeSenha}
-                        register={register("confirmeSenha")}
+                        {...register("confirmeSenha")}
                         onChange={(e) => setConfirmeSenha(e.target.value)}
                         placeholder="Confirme sua senha:"
                         label="Confirmar senha"
+                        
                         id="standard-adornment-password"
                         type={showPassword ? 'text' : 'password'}
                         endAdornment={
@@ -384,7 +392,6 @@ export default function FormRegister() {
                           </InputAdornment>
                         }
                     />
-                    {confirmeSenha != senha && <span className="message-error">Verifique suas senhas inseridas</span>}
                   </div>
 
                   <div className="container-input-span-info">
@@ -407,11 +414,11 @@ export default function FormRegister() {
                           required={true}
                           id="cep"
                           value={cep}
-                          register={register("cep")}
+                          {...register("cep")}
                           onChange={handleCepChange}
                           placeholder="Digite seu CEP:"
                           label="CEP"
-                          onBlur={buscaCep}
+                          // onBlur={buscaCep}
                       />
                       <a onClick={buscaCep}>
                         <span className="icon-search"><SearchIcon/></span>
@@ -424,7 +431,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={endereco}
-                        register={register("endereco")}
+                        {...register("endereco")}
                         onChange={(e) => setEndereco(e.target.value)}
                         placeholder="Digite seu Endereço:"
                         label="Endereço"
@@ -436,7 +443,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={numero}
-                        register={register("numero")}
+                        {...register("numero")}
                         onChange={(e) => setNumero(e.target.value)}
                         placeholder="Digite seu Número:"
                         label="Número"
@@ -448,7 +455,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={bairro}
-                        register={register("bairro")}
+                        {...register("bairro")}
                         onChange={(e) => setBairro(e.target.value)}
                         placeholder="Digite seu Bairro:"
                         label="Bairro"
@@ -460,7 +467,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={cidade}
-                        register={register("cidade")}
+                        {...register("cidade")}
                         onChange={(e) => setCidade(e.target.value)}
                         placeholder="Digite seu Cidade:"
                         label="Cidade"
@@ -472,7 +479,7 @@ export default function FormRegister() {
                     <Input
                         required={true}
                         value={estado}
-                        register={register("estado")}
+                        {...register("estado")}
                         onChange={(e) => setEstado(e.target.value)}
                         placeholder="Digite seu Estado:"
                         label="Estado"
