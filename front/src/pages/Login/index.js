@@ -111,6 +111,7 @@ const Login = () => {
                                     </a> */}
                                 </div>
                                 <Input 
+                                    value={email}
                                     placeholder="Email" 
                                     register={register("email")}  
                                     onChange={(e) => setEmail(e.target.value)}
@@ -118,6 +119,7 @@ const Login = () => {
                                 {errors.email && <span className="message-error">{errors.email.message}</span>}
 
                                 <Input 
+                                    value={password}
                                     placeholder="Senha"
                                     register={register("password")}
                                     onChange={(e) => setPassword(e.target.value)}
